@@ -28,15 +28,14 @@ Core capabilities:
 ## Built With
 - Airia Agent Studio (published agent, conditional routing, human approval, multi-step pipeline)
 - Python (`meetingmind_runner.py`, `meetingmind_batch.py`, `meetingmind_report_md.py`)
-- Streamlit (`meetingmind_dashboard.py`) for polished frontend demo
 - Slack Incoming Webhooks
 - Jira REST API v3
 - SMTP (Gmail/Office365 compatible)
 
 ## Architecture
-Airia (published v5.00):
+Airia (published v17.00):
 - Input -> Mode Router (Conditional Branch)
-- Manual Approval route -> Approval Request -> AI Model -> Action Planner Agent -> No-Op -> Delivery Packager Agent -> Output
+- Manual Approval route -> Approval Request -> AI Model -> Action Planner Agent -> Slack HTTPS Delivery -> Jira HTTPS Delivery -> Delivery Packager Agent -> Output
 - Auto Execute route -> AI Model (same downstream chain)
 - Denied approval route -> Stop and Error
 
@@ -51,7 +50,7 @@ Local orchestration:
 - It is an execution system, not only a summarizer.
 - It supports both safe governance (`Manual Approval`) and speed (`Auto Execute`).
 - It includes risk intelligence + historical memory, which makes the agent proactive instead of reactive.
-- It provides both backend automation and a demo-friendly frontend UI.
+- It is fully app-native in Airia (routing + approvals + delivery steps in one canvas).
 
 ## Impact
 - Cuts post-meeting ops overhead dramatically.
@@ -60,21 +59,16 @@ Local orchestration:
 - Gives managers a risk signal immediately after each meeting.
 
 ## Demo Flow (Suggested)
-1. Open Streamlit dashboard (`meetingmind_dashboard.py`).
-2. Run `manual` mode with transcript and show approval-gated behavior.
-3. Run `auto` mode and show direct completion.
-4. Show:
-- parsed action table,
-- risk/sentiment panel,
-- memory insights.
-5. Trigger real Slack/Jira/Email integrations live.
-6. Show generated KPI report (`demo_report.md`).
+1. Show Airia v17.00 canvas and dual-mode routing.
+2. Open `Slack HTTPS Delivery` and `Jira HTTPS Delivery` node configs.
+3. Show proof artifacts from real runs (`raw/demo_auto.run_report.json`, `raw/demo_manual.run_report.json`).
+4. Show KPI output report (`demo_report.md`).
+5. Show current quota limitation response (`raw/pipeline_exec_v17_check.json`) transparently.
 
 ## Validation
 - Unit tests: `22/22` passing.
-- Published Airia agent: v5.00.
-- Dual-route behavior validated through live execution.
+- Published Airia agent: v17.00.
+- Dual-route behavior validated through live execution history and integration outcomes.
 
 ## Public Airia URL
-`https://airia.ai/019cf690-4098-7aba-939c-a6292ca7c563/agents/06713078-ed36-4316-a783-dd89e562ae07/5.00`
-
+`https://airia.ai/019cf690-4098-7aba-939c-a6292ca7c563/agents/06713078-ed36-4316-a783-dd89e562ae07/17.00`
