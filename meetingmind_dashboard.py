@@ -45,16 +45,44 @@ APP_CSS = """
   --mm-card: #ffffff;
   --mm-border: #d8e2de;
   --mm-danger: #b8382c;
+  --mm-shadow: rgba(20, 36, 31, 0.12);
+}
+@keyframes mmGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes mmFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mmPulse {
+  0% { transform: scale(1); opacity: 0.75; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.75; }
+}
+@keyframes mmShimmer {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
 }
 .stApp {
   background:
     radial-gradient(1000px 400px at 12% 0%, #fff5de 0%, transparent 70%),
     radial-gradient(1200px 550px at 100% 20%, #dff5ef 0%, transparent 65%),
     linear-gradient(145deg, var(--mm-bg-1) 0%, var(--mm-bg-2) 100%);
+  background-size: 130% 130%, 130% 130%, 220% 220%;
+  animation: mmGradientShift 22s ease infinite;
 }
 .block-container {
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
+  animation: mmFadeInUp 0.45s ease-out;
 }
 h1, h2, h3, [data-testid="stMarkdownContainer"] h4 {
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
@@ -76,8 +104,57 @@ p, li, [data-testid="stMarkdownContainer"] {
   border-radius: 16px;
   padding: 20px 24px;
   background: linear-gradient(120deg, rgba(255,255,255,0.94) 0%, rgba(246,255,252,0.95) 55%, rgba(255,247,238,0.94) 100%);
-  box-shadow: 0 10px 24px rgba(36, 44, 41, 0.08);
+  box-shadow: 0 12px 28px var(--mm-shadow);
   margin-bottom: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.mm-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 34px var(--mm-shadow);
+}
+.mm-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.55) 48%, transparent 100%);
+  animation: mmShimmer 7s linear infinite;
+  pointer-events: none;
+}
+.mm-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.mm-hero-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #14402d;
+  background: #daf2e4;
+  border: 1px solid #b7dfca;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.mm-hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #1c7c54;
+  animation: mmPulse 1.4s ease-in-out infinite;
+}
+.mm-hero-line {
+  margin-top: 10px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1c7c54 0%, #d96f3c 55%, #f3c36b 100%);
 }
 .mm-hero h1 {
   margin: 0 0 6px 0;
@@ -95,6 +172,12 @@ p, li, [data-testid="stMarkdownContainer"] {
   background: var(--mm-card);
   padding: 10px 12px;
   margin-bottom: 8px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  animation: mmFadeInUp 0.34s ease both;
+}
+.mm-status-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(36, 44, 41, 0.08);
 }
 .mm-status-card strong {
   color: var(--mm-ink);
@@ -133,9 +216,16 @@ p, li, [data-testid="stMarkdownContainer"] {
   border: 1px solid var(--mm-border);
   border-radius: 12px;
   padding: 8px 12px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  animation: mmFadeInUp 0.5s ease both;
+}
+[data-testid="stMetric"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(36, 44, 41, 0.1);
 }
 [data-testid="stMetricLabel"] {
   color: var(--mm-muted);
+  font-weight: 600;
 }
 [data-testid="stMetricValue"] {
   color: var(--mm-ink);
@@ -144,35 +234,75 @@ p, li, [data-testid="stMarkdownContainer"] {
 [data-baseweb="tab-list"] button {
   color: #20303b !important;
   font-weight: 600 !important;
+  transition: color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  border-radius: 8px 8px 0 0;
 }
 [data-baseweb="tab-list"] button[aria-selected="true"] {
   color: #12212b !important;
   border-bottom-color: #d96f3c !important;
+  background: rgba(255,255,255,0.65) !important;
+}
+[data-baseweb="tab-list"] button:hover {
+  transform: translateY(-1px);
 }
 .stTextArea textarea, .stTextInput input, .stSelectbox div[data-baseweb="select"] {
   background-color: #ffffff !important;
   color: #12212b !important;
+  border-radius: 10px !important;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.stTextArea textarea:focus, .stTextInput input:focus {
+  border-color: #9dbdae !important;
+  box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.14) !important;
 }
 .stButton > button {
   border-radius: 10px;
   border: 1px solid #d1ddd8;
   font-weight: 600;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 .stButton > button[kind="primary"] {
   border: 1px solid #ca5f2f;
   background: linear-gradient(135deg, #d96f3c 0%, #ea8453 100%);
+  color: #ffffff;
+}
+.stButton > button:active {
+  transform: translateY(0);
 }
 .stButton > button:hover {
+  transform: translateY(-1px);
   border-color: #8ea39a;
+  box-shadow: 0 8px 18px rgba(34, 44, 41, 0.12);
 }
 .mm-panel {
   border: 1px solid var(--mm-border);
   border-radius: 14px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 8px 18px rgba(36, 44, 41, 0.06);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.mm-panel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 11px 24px rgba(36, 44, 41, 0.1);
 }
 .mm-mono {
   font-family: "IBM Plex Mono", "Consolas", monospace;
+}
+[data-testid="stDataFrame"], [data-testid="stCodeBlock"] {
+  animation: mmFadeInUp 0.45s ease both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stApp,
+  .block-container,
+  .mm-hero::after,
+  .mm-hero-dot,
+  .mm-status-card,
+  [data-testid="stMetric"],
+  [data-testid="stDataFrame"],
+  [data-testid="stCodeBlock"] {
+    animation: none !important;
+  }
 }
 </style>
 """
@@ -416,8 +546,13 @@ def main() -> None:
     st.markdown(
         """
         <div class="mm-hero">
+          <div class="mm-hero-top">
+            <span class="mm-hero-pill">Live Demo Surface</span>
+            <span class="mm-hero-dot"></span>
+          </div>
           <h1>MeetingMind++ Command Deck</h1>
           <p>Enterprise meeting operations cockpit with dual-route execution, live integrations, risk intelligence, and memory telemetry.</p>
+          <div class="mm-hero-line"></div>
         </div>
         """,
         unsafe_allow_html=True,
