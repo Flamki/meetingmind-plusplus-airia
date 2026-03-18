@@ -1,0 +1,24 @@
+# Final Submission Checklist
+
+- [ ] Airia account and agent built on platform
+- [ ] Agent publicly published to Airia Community
+- [ ] Airia Community public URL copied
+- [ ] Confirm published version is `v5.00` (or latest) in Airia
+- [ ] Pipeline endpoint tested with real transcript
+- [ ] Manual mode demo run completed (`--mode manual`)
+- [ ] Auto mode demo run completed (`--mode auto`)
+- [ ] `meetingmind_batch.py` run completed
+- [ ] `demo_report.json` generated
+- [ ] `meetingmind_report_md.py` run completed
+- [ ] `demo_report.md` generated
+- [ ] Streamlit UI demo tested (`meetingmind_dashboard.py`)
+- [ ] Slack live post verified (if enabled)
+- [ ] Jira live issue creation verified (if enabled)
+- [ ] Email live send verified
+- [ ] `--strict-integrations` run passes
+- [ ] Demo video recorded (keep <= 3 minutes)
+- [ ] Devpost fields completed
+- [ ] Airia Community URL included in Devpost
+- [ ] GitHub/repo link added (if used)
+- [ ] Security rotation completed for any shared credentials
+- [ ] Final submission submitted before deadline

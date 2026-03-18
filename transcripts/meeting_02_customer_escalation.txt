@@ -1,0 +1,23 @@
+Meeting: Customer Escalation Review
+Date: March 14, 2026
+Attendees: Sam (Account Manager), Elena (Solutions), Vik (Engineering), Rui (Security), Anya (Ops)
+
+Sam: Customer NorthBridge escalated response times in analytics dashboards.
+Elena: Their workspace has 17 heavy reports refreshing every hour.
+Vik: Query caching is disabled in two key endpoints, likely causing load spikes.
+Rui: We should confirm no security policy blocks are impacting request retries.
+Anya: Ops can add temporary autoscaling but we need root-cause fix.
+Sam: We promised an RCA draft in 24 hours and a mitigation plan in 48 hours.
+Vik: I can patch caching flag and run load tests tonight.
+Elena: I will prepare customer-facing explanation and timeline.
+Rui: Security audit log pull can be completed by tomorrow morning.
+Anya: Let's set a checkpoint with leadership before sending final RCA.
+
+Action items discussed:
+- Vik to enable caching flags on analytics endpoints and complete load test by March 16 9 AM.
+- Rui to export and review security audit logs by March 16 10 AM.
+- Elena to draft customer update email with mitigation steps by March 16 noon.
+- Anya to configure temporary autoscaling policy by March 15 EOD.
+- Sam to schedule leadership checkpoint and send agenda by March 15 6 PM.
+
+End of transcript.

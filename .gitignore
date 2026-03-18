@@ -1,0 +1,32 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local runtime artifacts
+raw/
+logs/
+airia_response.json
+run_report.json
+demo_report.json
+demo_report.md
+weekly_intelligence.json
+weekly_intelligence.md
+weekly_intelligence.pdf
+.meetingmind_idempotency.json
+.meetingmind_memory.json
+hackathon_submission_pack*.zip
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/

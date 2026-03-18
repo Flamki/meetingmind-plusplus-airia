@@ -1,0 +1,23 @@
+Meeting: Revenue Operations Planning
+Date: March 13, 2026
+Attendees: Daniel (RevOps), Chloe (Marketing), Ishan (Sales Ops), Tara (Finance), Zoe (Data)
+
+Daniel: We need cleaner handoff from marketing-qualified leads to SDR queue.
+Chloe: Campaign attribution is fragmented across forms and webinar tools.
+Ishan: SLA breaches are happening because owner assignment is delayed.
+Zoe: We can build a daily anomaly report for lead routing and conversion drop-offs.
+Tara: Forecasting accuracy suffered last month due to missing stage updates.
+Daniel: Let's implement a weekly compliance reminder and escalation path.
+Chloe: I want a standard follow-up template by segment.
+Ishan: We should add validation checks before opportunities advance stages.
+Zoe: Data model update can be finished this week if requirements are finalized today.
+Tara: Finance needs a Friday snapshot pack for exec review.
+
+Action items discussed:
+- Zoe to build lead-routing anomaly report and share first version by March 18.
+- Ishan to implement owner-assignment SLA monitor and alert by March 17.
+- Chloe to produce segmented follow-up templates by March 19.
+- Daniel to define escalation policy and circulate for approval by March 16.
+- Tara to publish Friday forecasting snapshot template by March 20.
+
+End of transcript.

@@ -1,0 +1,23 @@
+Meeting: Weekly Product Sync
+Date: March 15, 2026
+Attendees: Priya (PM), Arjun (Eng), Maya (Design), Liam (Sales), Nora (CS)
+
+Priya: Goal today is to finalize the onboarding checklist release and align on enterprise trial feedback.
+Liam: Two prospects asked for SSO setup guidance before pilot kickoff.
+Arjun: Engineering can ship the onboarding checklist API by Thursday if we freeze scope today.
+Maya: UX polish for checklist progress indicators needs one more pass.
+Nora: Support has three repeated tickets around first-login confusion.
+Priya: We need a short email update for pilot customers with timeline and known limitations.
+Arjun: Also need a monitoring alert for checklist API error rate above 2 percent.
+Liam: Can someone build a one-page sales FAQ by Friday?
+Maya: I can draft visual snippets if content is ready.
+Priya: Decision: freeze checklist scope today, release target remains March 21.
+
+Action items discussed:
+- Arjun will finalize onboarding checklist API and deploy to staging by March 18.
+- Maya will deliver progress indicator UI polish by March 17 EOD.
+- Nora will compile top 10 first-login pain points and share in Slack by March 16.
+- Priya will draft pilot customer email update and circulate for approval by March 17 noon.
+- Liam will draft enterprise trial FAQ content by March 19.
+
+End of transcript.

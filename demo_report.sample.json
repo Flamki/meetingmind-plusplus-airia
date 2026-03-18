@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "generated_at_utc": "2026-03-16T15:45:00+00:00",
+    "pipeline_id": "06713078-ed36-4316-a783-dd89e562ae07",
+    "input_dir": "C:\\Users\\bbook\\Desktop\\airia\\transcripts",
+    "pattern": "*.txt",
+    "recursive": true,
+    "files_processed": 3,
+    "total_duration_seconds": 4.712,
+    "avg_runtime_seconds": 1.571
+  },
+  "kpis": {
+    "successful_runs": 3,
+    "failed_runs": 0,
+    "total_action_items": 15,
+    "avg_action_items_per_success": 5.0,
+    "top_owners": [
+      {
+        "owner": "Arjun",
+        "count": 1
+      },
+      {
+        "owner": "Maya",
+        "count": 1
+      },
+      {
+        "owner": "Nora",
+        "count": 1
+      },
+      {
+        "owner": "Priya",
+        "count": 1
+      },
+      {
+        "owner": "Liam",
+        "count": 1
+      },
+      {
+        "owner": "Vik",
+        "count": 1
+      },
+      {
+        "owner": "Rui",
+        "count": 1
+      },
+      {
+        "owner": "Elena",
+        "count": 1
+      },
+      {
+        "owner": "Anya",
+        "count": 1
+      },
+      {
+        "owner": "Sam",
+        "count": 1
+      }
+    ]
+  },
+  "runs": [
+    {
+      "file": "meeting_01_product_sync.txt",
+      "status": "ok",
+      "duration_seconds": 1.601,
+      "input_chars": 1334,
+      "summary_text": "Decision: freeze onboarding checklist scope and release on March 21. Team aligned on SSO guidance, support ticket trends, and customer communications. Extracted 5 clear follow-up actions.",
+      "summary_preview": "Decision: freeze onboarding checklist scope and release on March 21. Team aligned on SSO guidance, support ticket trends, and customer communications.",
+      "action_items": [
+        {
+          "task": "Finalize onboarding checklist API and deploy to staging",
+          "owner": "Arjun",
+          "deadline": "March 18"
+        },
+        {
+          "task": "Deliver progress indicator UI polish",
+          "owner": "Maya",
+          "deadline": "March 17 EOD"
+        },
+        {
+          "task": "Compile first-login pain points and share in Slack",
+          "owner": "Nora",
+          "deadline": "March 16"
+        },
+        {
+          "task": "Draft pilot customer email update for approval",
+          "owner": "Priya",
+          "deadline": "March 17 noon"
+        },
+        {
+          "task": "Draft enterprise trial FAQ content",
+          "owner": "Liam",
+          "deadline": "March 19"
+        }
+      ],
+      "action_item_count": 5
+    },
+    {
+      "file": "meeting_02_customer_escalation.txt",
+      "status": "ok",
+      "duration_seconds": 1.548,
+      "input_chars": 1290,
+      "summary_text": "Team identified caching misconfiguration and agreed on immediate mitigation with autoscaling, audit checks, and customer communication. 5 action items were assigned with near-term deadlines.",
+      "summary_preview": "Team identified caching misconfiguration and agreed on immediate mitigation with autoscaling, audit checks, and customer communication.",
+      "action_items": [
+        {
+          "task": "Enable caching flags and complete load test",
+          "owner": "Vik",
+          "deadline": "March 16 9 AM"
+        },
+        {
+          "task": "Export and review security audit logs",
+          "owner": "Rui",
+          "deadline": "March 16 10 AM"
+        },
+        {
+          "task": "Draft customer mitigation email",
+          "owner": "Elena",
+          "deadline": "March 16 noon"
+        },
+        {
+          "task": "Configure temporary autoscaling policy",
+          "owner": "Anya",
+          "deadline": "March 15 EOD"
+        },
+        {
+          "task": "Schedule leadership checkpoint and agenda",
+          "owner": "Sam",
+          "deadline": "March 15 6 PM"
+        }
+      ],
+      "action_item_count": 5
+    },
+    {
+      "file": "meeting_03_revenue_ops.txt",
+      "status": "ok",
+      "duration_seconds": 1.563,
+      "input_chars": 1292,
+      "summary_text": "Revenue operations meeting prioritized lead-routing reliability, SLA monitoring, and forecasting quality. Team agreed on policy and reporting deliverables across the week.",
+      "summary_preview": "Revenue operations meeting prioritized lead-routing reliability, SLA monitoring, and forecasting quality.",
+      "action_items": [
+        {
+          "task": "Build lead-routing anomaly report",
+          "owner": "Zoe",
+          "deadline": "March 18"
+        },
+        {
+          "task": "Implement owner-assignment SLA monitor",
+          "owner": "Ishan",
+          "deadline": "March 17"
+        },
+        {
+          "task": "Produce segmented follow-up templates",
+          "owner": "Chloe",
+          "deadline": "March 19"
+        },
+        {
+          "task": "Define escalation policy and circulate",
+          "owner": "Daniel",
+          "deadline": "March 16"
+        },
+        {
+          "task": "Publish Friday forecasting snapshot template",
+          "owner": "Tara",
+          "deadline": "March 20"
+        }
+      ],
+      "action_item_count": 5
+    }
+  ]
+}
