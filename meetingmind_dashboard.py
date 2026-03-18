@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 from __future__ import annotations
 
 import concurrent.futures
@@ -34,6 +34,134 @@ from meetingmind_runner import (
     smtp_send_with_retries,
 )
 
+APP_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root {
+  --mm-bg-1: #f7f5ef;
+  --mm-bg-2: #e9f2ea;
+  --mm-ink: #182027;
+  --mm-muted: #5d6a74;
+  --mm-accent: #1c7c54;
+  --mm-accent-2: #d96f3c;
+  --mm-card: #ffffff;
+  --mm-border: #d8e2de;
+  --mm-danger: #b8382c;
+}
+.stApp {
+  background:
+    radial-gradient(1000px 400px at 12% 0%, #fff5de 0%, transparent 70%),
+    radial-gradient(1200px 550px at 100% 20%, #dff5ef 0%, transparent 65%),
+    linear-gradient(145deg, var(--mm-bg-1) 0%, var(--mm-bg-2) 100%);
+}
+.block-container {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+}
+h1, h2, h3, [data-testid="stMarkdownContainer"] h4 {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: var(--mm-ink);
+  letter-spacing: 0.01em;
+}
+p, li, [data-testid="stMarkdownContainer"] {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+[data-testid="stSidebar"] * {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif !important;
+}
+.mm-hero {
+  border: 1px solid var(--mm-border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  background: linear-gradient(120deg, rgba(255,255,255,0.94) 0%, rgba(246,255,252,0.95) 55%, rgba(255,247,238,0.94) 100%);
+  box-shadow: 0 10px 24px rgba(36, 44, 41, 0.08);
+  margin-bottom: 0.75rem;
+}
+.mm-hero h1 {
+  margin: 0 0 6px 0;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+.mm-hero p {
+  margin: 0;
+  color: var(--mm-muted);
+}
+.mm-status-card {
+  border: 1px solid var(--mm-border);
+  border-left: 5px solid var(--mm-muted);
+  border-radius: 12px;
+  background: var(--mm-card);
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+.mm-status-card strong {
+  color: var(--mm-ink);
+}
+.mm-status-card .mm-detail {
+  color: var(--mm-muted);
+  font-size: 0.86rem;
+  margin-top: 4px;
+}
+.mm-status-ok {
+  border-left-color: var(--mm-accent);
+}
+.mm-status-bad {
+  border-left-color: var(--mm-danger);
+}
+.mm-chip {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.mm-chip-ok {
+  color: #0f5132;
+  background: #d8f2e2;
+}
+.mm-chip-bad {
+  color: #6d1f19;
+  background: #f8ddda;
+}
+[data-testid="stMetric"] {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--mm-border);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+[data-testid="stMetricLabel"] {
+  color: var(--mm-muted);
+}
+[data-testid="stMetricValue"] {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+.stButton > button {
+  border-radius: 10px;
+  border: 1px solid #d1ddd8;
+  font-weight: 600;
+}
+.stButton > button[kind="primary"] {
+  border: 1px solid #ca5f2f;
+  background: linear-gradient(135deg, #d96f3c 0%, #ea8453 100%);
+}
+.stButton > button:hover {
+  border-color: #8ea39a;
+}
+.mm-panel {
+  border: 1px solid var(--mm-border);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.78);
+}
+.mm-mono {
+  font-family: "IBM Plex Mono", "Consolas", monospace;
+}
+</style>
+"""
+
 
 def _with_mode_prefix(text: str, mode: str) -> str:
     lowered = text.lower()
@@ -60,7 +188,7 @@ def _service_status() -> Dict[str, Tuple[bool, List[str]]]:
     }
     out: Dict[str, Tuple[bool, List[str]]] = {}
     for name, req in checks.items():
-        if isinstance(req[0], list):  # OR clauses
+        if isinstance(req[0], list):
             ok = False
             missing_all: List[str] = []
             for clause in req:  # type: ignore[arg-type]
@@ -90,6 +218,7 @@ def _render_risk_heatmap(memory_store: Dict[str, Any]) -> None:
     if not runs:
         st.info("No memory history yet for heatmap.")
         return
+
     bucket: Dict[str, Dict[str, int]] = {}
     for run in runs[-50:]:
         if not isinstance(run, dict):
@@ -100,10 +229,31 @@ def _render_risk_heatmap(memory_store: Dict[str, Any]) -> None:
             continue
         bucket.setdefault(ts, {"low": 0, "medium": 0, "high": 0, "unknown": 0})
         bucket[ts][risk if risk in bucket[ts] else "unknown"] += 1
+
     rows: List[Dict[str, Any]] = []
     for day in sorted(bucket.keys()):
         rows.append({"date": day, **bucket[day]})
-    st.dataframe(rows, use_container_width=True)
+
+    total_high = sum(r.get("high", 0) for r in rows)
+    total_medium = sum(r.get("medium", 0) for r in rows)
+    total_low = sum(r.get("low", 0) for r in rows)
+    m1, m2, m3 = st.columns(3)
+    m1.metric("High Risk (50 runs)", total_high)
+    m2.metric("Medium Risk (50 runs)", total_medium)
+    m3.metric("Low Risk (50 runs)", total_low)
+    st.dataframe(rows, use_container_width=True, hide_index=True)
+
+
+def _status_card(name: str, ok: bool, detail: str) -> str:
+    state = "READY" if ok else "MISSING"
+    chip_class = "mm-chip-ok" if ok else "mm-chip-bad"
+    card_class = "mm-status-ok" if ok else "mm-status-bad"
+    return (
+        f"<div class='mm-status-card {card_class}'>"
+        f"<strong>{name}</strong><span class='mm-chip {chip_class}'>{state}</span>"
+        f"<div class='mm-detail'>{detail}</div>"
+        "</div>"
+    )
 
 
 def _dispatch_integrations(
@@ -283,22 +433,41 @@ def _execute_once(*, content: str, mode: str, use_webhook: bool) -> Dict[str, An
 
 def main() -> None:
     load_dotenv_file(Path(".env"))
-    st.set_page_config(page_title="MeetingMind++ Control Center", page_icon="MM", layout="wide")
+    st.set_page_config(
+        page_title="MeetingMind++ Control Center",
+        page_icon="MM",
+        layout="wide",
+        initial_sidebar_state="expanded",
+    )
+    st.markdown(APP_CSS, unsafe_allow_html=True)
     st.markdown(
         """
-        <style>
-        .stApp { background: linear-gradient(120deg, #f3f8ff 0%, #eef7f0 100%); }
-        .block-container { padding-top: 1rem; }
-        </style>
+        <div class="mm-hero">
+          <h1>MeetingMind++ Command Deck</h1>
+          <p>Enterprise meeting operations cockpit with dual-route execution, live integrations, risk intelligence, and memory telemetry.</p>
+        </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.title("MeetingMind++ Control Center")
-    st.caption("Advanced demo center: dual-route execution, live integrations, memory intelligence, and KPI telemetry")
-
     memory_path = Path(".meetingmind_memory.json")
     memory_store = load_memory_store(memory_path)
+    statuses = _service_status()
+
+    ready_services = sum(1 for ok, _ in statuses.values() if ok)
+    total_services = len(statuses)
+    recent_runs = len(memory_store.get("runs", []))
+    high_risk_recent = sum(
+        1
+        for run in memory_store.get("runs", [])[-10:]
+        if isinstance(run, dict) and str(run.get("risk_level", "")).lower() == "high"
+    )
+
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Services Ready", f"{ready_services}/{total_services}")
+    k2.metric("Recent Runs", recent_runs)
+    k3.metric("High-Risk in Last 10", high_risk_recent)
+    k4.metric("Active Profile", "Hackathon Live")
 
     with st.sidebar:
         st.subheader("Execution Setup")
@@ -311,47 +480,68 @@ def main() -> None:
         create_asana_enabled = st.toggle("Create Asana Tasks", value=False)
         send_email_enabled = st.toggle("Send Follow-up Email", value=False)
         dry_run = st.toggle("Dry Run (no external writes)", value=False)
+
         st.divider()
-        st.subheader("Service Status")
-        statuses = _service_status()
+        st.subheader("Service Health")
         for name, (ok, missing) in statuses.items():
-            icon = "🟢" if ok else "🔴"
-            msg = "ready" if ok else f"missing: {', '.join(missing[:3])}"
-            st.write(f"{icon} {name}: {msg}")
+            detail = "Configured and ready" if ok else f"Missing: {', '.join(missing[:4])}"
+            st.markdown(_status_card(name, ok, detail), unsafe_allow_html=True)
 
-    col_left, col_right = st.columns([1.3, 1.0], gap="large")
-    with col_left:
-        transcript_file = st.file_uploader("Upload meeting transcript (.txt)", type=["txt"])
-        transcript_text = st.text_area("Or paste transcript / meeting notes", height=260)
-        run_clicked = st.button("Run MeetingMind++", type="primary", use_container_width=True)
-        one_click_demo = st.button("One-Click Demo (Manual + Auto)", use_container_width=True)
-    with col_right:
-        st.subheader("Execution Logs")
-        log_placeholder = st.empty()
-        log_placeholder.code("\n".join(st.session_state.get("live_logs", [])) or "(no logs yet)")
+    tab_exec, tab_observe, tab_memory = st.tabs(["Execution", "Observability", "Memory History"])
 
-    st.subheader("Risk Heatmap (Recent Memory)")
-    _render_risk_heatmap(memory_store)
+    with tab_exec:
+        col_left, col_right = st.columns([1.35, 1.0], gap="large")
+        with col_left:
+            st.markdown("<div class='mm-panel'>", unsafe_allow_html=True)
+            transcript_file = st.file_uploader("Upload Meeting Transcript (.txt)", type=["txt"])
+            transcript_text = st.text_area("Paste Transcript / Meeting Notes", height=260)
+            run_clicked = st.button("Run MeetingMind++", type="primary", use_container_width=True)
+            one_click_demo = st.button("One-Click Demo (Manual + Auto)", use_container_width=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+            result_placeholder = st.container()
 
-    st.subheader("Past Meeting History")
-    runs = memory_store.get("runs", [])
-    history_rows = []
-    for run in reversed(runs[-30:]):
-        if not isinstance(run, dict):
-            continue
-        actions = run.get("actions", [])
-        history_rows.append(
-            {
-                "timestamp": run.get("timestamp", ""),
-                "risk_level": run.get("risk_level", "unknown"),
-                "sentiment": run.get("sentiment", "unknown"),
-                "action_count": len(actions) if isinstance(actions, list) else 0,
-            }
-        )
-    if history_rows:
-        st.dataframe(history_rows, use_container_width=True)
-    else:
-        st.info("No history yet.")
+        with col_right:
+            st.markdown("<div class='mm-panel'>", unsafe_allow_html=True)
+            st.subheader("Live Execution Log")
+            log_placeholder = st.empty()
+            log_placeholder.code("\n".join(st.session_state.get("live_logs", [])) or "(no logs yet)")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    with tab_observe:
+        st.subheader("Risk Distribution Over Time")
+        _render_risk_heatmap(memory_store)
+        st.subheader("Integration Readiness Matrix")
+        status_rows = []
+        for name, (ok, missing) in statuses.items():
+            status_rows.append(
+                {
+                    "service": name,
+                    "state": "READY" if ok else "MISSING",
+                    "missing_keys": ", ".join(missing) if missing else "-",
+                }
+            )
+        st.dataframe(status_rows, use_container_width=True, hide_index=True)
+
+    with tab_memory:
+        st.subheader("Past Meeting History")
+        runs = memory_store.get("runs", [])
+        history_rows = []
+        for run in reversed(runs[-30:]):
+            if not isinstance(run, dict):
+                continue
+            actions = run.get("actions", [])
+            history_rows.append(
+                {
+                    "timestamp": run.get("timestamp", ""),
+                    "risk_level": run.get("risk_level", "unknown"),
+                    "sentiment": run.get("sentiment", "unknown"),
+                    "action_count": len(actions) if isinstance(actions, list) else 0,
+                }
+            )
+        if history_rows:
+            st.dataframe(history_rows, use_container_width=True, hide_index=True)
+        else:
+            st.info("No history yet.")
 
     def refresh_logs() -> None:
         log_placeholder.code("\n".join(st.session_state.get("live_logs", [])) or "(no logs yet)")
@@ -359,12 +549,15 @@ def main() -> None:
     def process_single(content: str, selected_mode: str) -> None:
         _log(f"Starting {selected_mode} execution")
         refresh_logs()
+
         response = _execute_once(content=content, mode=selected_mode, use_webhook=use_webhook)
         raw_dir = Path("raw")
         raw_dir.mkdir(exist_ok=True)
         (raw_dir / f"live_run_{selected_mode}.airia.json").write_text(
-            json.dumps(response, indent=2, ensure_ascii=False), encoding="utf-8"
+            json.dumps(response, indent=2, ensure_ascii=False),
+            encoding="utf-8",
         )
+
         if is_pending_human_approval(response):
             execution_ref = response.get("executionId") or response.get("result")
             _log(f"{selected_mode} paused for approval: {execution_ref}")
@@ -380,13 +573,16 @@ def main() -> None:
 
         st.markdown("### Summary")
         st.write(summary_text[:12000] if summary_text else "(No summary returned)")
+
         st.markdown("### Action Items")
         if actions:
-            st.dataframe(_actions_table(actions), use_container_width=True)
+            st.dataframe(_actions_table(actions), use_container_width=True, hide_index=True)
         else:
             st.info("No structured action items parsed.")
+
         st.markdown("### Sentiment + Risk")
         st.write(format_risk_brief(risk))
+
         st.markdown("### Memory Insights")
         st.write("\n".join([f"- {x}" for x in memory_insights[:8]]))
 
@@ -430,15 +626,19 @@ def main() -> None:
             if not content:
                 st.error("Please provide transcript text (upload or paste).")
             else:
-                process_single(content, mode)
+                with result_placeholder:
+                    process_single(content, mode)
 
         if one_click_demo:
             t1 = Path("transcripts/meeting_01_product_sync.txt")
             t2 = Path("transcripts/meeting_02_customer_escalation.txt")
             if not t1.exists() or not t2.exists():
-                raise MeetingMindError("One-click demo expects transcripts/meeting_01_product_sync.txt and meeting_02_customer_escalation.txt")
-            process_single(t1.read_text(encoding="utf-8"), "manual")
-            process_single(t2.read_text(encoding="utf-8"), "auto")
+                raise MeetingMindError(
+                    "One-click demo expects transcripts/meeting_01_product_sync.txt and meeting_02_customer_escalation.txt"
+                )
+            with result_placeholder:
+                process_single(t1.read_text(encoding="utf-8"), "manual")
+                process_single(t2.read_text(encoding="utf-8"), "auto")
 
     except MeetingMindError as exc:
         _log(f"ERROR: {exc}")
