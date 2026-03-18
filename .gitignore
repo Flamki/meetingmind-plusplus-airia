@@ -15,6 +15,7 @@ venv/
 # Local runtime artifacts
 raw/
 logs/
+tools/cloudflared.exe
 airia_response.json
 run_report.json
 demo_report.json
